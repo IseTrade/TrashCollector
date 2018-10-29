@@ -47,5 +47,9 @@ namespace TrashCollector.Models
         public double MoneyOwed { get; set; }
 
         public double Balance { get; set; }
+
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationCustId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

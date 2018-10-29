@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -14,10 +16,18 @@ namespace TrashCollector.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Employees
-        public ActionResult Index()
+        //GET: Employees
+        //[HttpGet]
+        //public ActionResult Index()
+        //{
+        //    return View(db.Employees.ToList());
+        //}
+        [HttpGet]
+        public ActionResult Index(Employee employee)
         {
-            return View(db.Employees.ToList());
+            //This is not working. Need fix. 
+            var showCustomers = db.Customers.Where(c => c.Address.Zipcode == employee.ZipCode).ToList();
+            return View(showCustomers);
         }
 
         // GET: Employees/Details/5
@@ -50,11 +60,12 @@ namespace TrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                employee.ApplicationEmployeeId = User.Identity.GetUserId();
                 db.Employees.Add(employee);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            
             return View(employee);
         }
 

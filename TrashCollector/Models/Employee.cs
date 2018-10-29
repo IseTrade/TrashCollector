@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrashCollector.Models
 {
@@ -20,6 +21,10 @@ namespace TrashCollector.Models
 
         [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
+
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationEmployeeId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
     }
 }
