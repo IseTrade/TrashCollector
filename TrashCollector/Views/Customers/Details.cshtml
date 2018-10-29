@@ -1,0 +1,122 @@
+﻿@model TrashCollector.Models.Customer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.NumberAndStreet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.NumberAndStreet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PickupDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PickupDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PickupStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PickupStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PickupEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PickupEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpecialPickup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpecialPickup)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SuspendStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SuspendStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SuspendEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SuspendEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoneyOwed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoneyOwed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
