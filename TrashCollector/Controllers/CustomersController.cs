@@ -40,6 +40,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            string user = User.Identity.GetUserId();
             ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet");
             return View();
         }

@@ -15,6 +15,8 @@ namespace TrashCollector.Controllers
     public class EmployeesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        ApplicationUser user = new ApplicationUser();
+
 
         //GET: Employees
         //[HttpGet]
@@ -23,11 +25,12 @@ namespace TrashCollector.Controllers
         //    return View(db.Employees.ToList());
         //}
         [HttpGet]
-        public ActionResult Index(Employee employee)
+        public ActionResult Index()
         {
-            //This is not working. Need fix. 
-            var showCustomers = db.Customers.Where(c => c.Address.Zipcode == employee.ZipCode).ToList();
-            return View(showCustomers);
+            var currentUser = User.Identity.GetUserId();
+            var employee = db.Employees.Where(e => e.ApplicationEmployeeId == currentUser).SingleOrDefault();
+            var customerList = db.Customers.Where(c => c.Address.Zipcode == employee.ZipCode).ToList();
+            return View(customerList);
         }
 
         // GET: Employees/Details/5
@@ -48,6 +51,7 @@ namespace TrashCollector.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            var user = User.Identity.GetUserId();
             return View();
         }
 

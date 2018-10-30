@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201810291628079_add applicaton user.Designer.cs">
       <DependentUpon>201810291628079_add applicaton user.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810300344321_fxing roles for customer and employee.cs" />
+    <Compile Include="Migrations\201810300344321_fxing roles for customer and employee.Designer.cs">
+      <DependentUpon>201810300344321_fxing roles for customer and employee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -339,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810291628079_add applicaton user.resx">
       <DependentUpon>201810291628079_add applicaton user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810300344321_fxing roles for customer and employee.resx">
+      <DependentUpon>201810300344321_fxing roles for customer and employee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

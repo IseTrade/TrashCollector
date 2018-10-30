@@ -149,27 +149,67 @@ namespace TrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserRole = model.UserRole };
+            //    var result = await UserManager.CreateAsync(user, model.Password);
+            //    if (result.Succeeded)
+            //    {
+            //        await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+            //        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+            //        // Send an email with this link
+            //        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            //        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            //        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+            //        await this.UserManager.AddToRoleAsync(user.Id, model.UserRole);
+            //        return RedirectToAction("Index", "Home");
+            //    }
+            //    AddErrors(result);
+            //}
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserRole = model.UserRole };
             if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserRole = model.UserRole };
+            {               
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    await this.UserManager.AddToRoleAsync(user.Id, model.UserRole);
-                    return RedirectToAction("Index", "Home");
+                    UserManager.AddToRole(user.Id, "Customer");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    if (model.UserRole == "Customer")
+                    {
+                        return RedirectToAction("Create", "Customers");
+                    }
+                    else if (model.UserRole == "Employee")
+                    {
+                        return RedirectToAction("Create", "Employees");
+                    }
+                    
                 }
                 AddErrors(result);
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void CreateCustomer(ApplicationUser user)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Customer customer = new Customer()
+            {
+                ApplicationCustId = user.Id,
+            };
+            db.Customers.Add(customer);
+            db.SaveChanges();
+        }
+        private void CreateEmployee(ApplicationUser user)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Employee employee = new Employee()
+            {
+                ApplicationEmployeeId = user.Id,
+            };
+            db.Employees.Add(employee);
+            db.SaveChanges();
         }
 
         //
