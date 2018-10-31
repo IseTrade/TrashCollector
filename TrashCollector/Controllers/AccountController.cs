@@ -22,7 +22,7 @@ namespace TrashCollector.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +34,9 @@ namespace TrashCollector.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -79,6 +79,12 @@ namespace TrashCollector.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ApplicationDbContext db = new ApplicationDbContext();
+                    var selectedUser = db.Users.SingleOrDefault(User => User.Email == model.Email);
+                    if (selectedUser != null)
+                    {
+                        return RedirectToLocal(selectedUser);
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -120,7 +126,7 @@ namespace TrashCollector.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -167,9 +173,11 @@ namespace TrashCollector.Controllers
             //    }
             //    AddErrors(result);
             //}
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserRole = model.UserRole };
+
             if (ModelState.IsValid)
-            {               
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserRole = model.UserRole };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -183,7 +191,6 @@ namespace TrashCollector.Controllers
                     {
                         return RedirectToAction("Create", "Employees");
                     }
-                    
                 }
                 AddErrors(result);
             }
@@ -481,6 +488,32 @@ namespace TrashCollector.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        /// <summary>
+        /// An overloaded RedirectToLocal method
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private ActionResult RedirectToLocal(ApplicationUser user)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            if (UserManager.IsInRole(user.Id, "Customer"))
+            {
+                var selectedCustomer = db.Customers.SingleOrDefault(c => c.ApplicationCustId == user.Id);
+                //return RedirectToAction("Index", "Customers", new { id = selectedCustomer.Id });
+                return RedirectToAction("Index", "Customers");
+            }
+            else if (UserManager.IsInRole(user.Id, "Employee"))
+            {
+                var selectedEmployee = db.Employees.Where(e => e.ApplicationEmployeeId == user.Id).Single();
+                return RedirectToAction("Index", "Employees", new { id = selectedEmployee.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

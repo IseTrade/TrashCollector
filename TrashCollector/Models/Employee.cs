@@ -23,7 +23,7 @@ namespace TrashCollector.Models
         public string ZipCode { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        public string ApplicationEmployeeId { get; set; }
+        public string ApplicationEmployeeId { get; internal set; }
         public ApplicationUser ApplicationUser { get; set; }
 
     }

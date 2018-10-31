@@ -49,7 +49,7 @@ namespace TrashCollector.Models
         public double Balance { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        public string ApplicationCustId { get; set; }
+        public string ApplicationCustId { get; internal set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
 }
