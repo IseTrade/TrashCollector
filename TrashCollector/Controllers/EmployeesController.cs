@@ -19,13 +19,13 @@ namespace TrashCollector.Controllers
 
 
         //GET: Employees
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    return View(db.Employees.ToList());
-        //}
         [HttpGet]
         public ActionResult Index()
+        {
+            return View(db.Employees.ToList());
+        }
+        [HttpGet]
+        public ActionResult CustomerList()
         {
             var currentUser = User.Identity.GetUserId();
             var employee = db.Employees.Where(e => e.ApplicationEmployeeId == currentUser).SingleOrDefault();
