@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -17,6 +18,8 @@ namespace TrashCollector.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext db = new ApplicationDbContext();
+
 
         public AccountController()
         {
@@ -79,13 +82,27 @@ namespace TrashCollector.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    ApplicationDbContext db = new ApplicationDbContext();
-                    var selectedUser = db.Users.SingleOrDefault(User => User.Email == model.Email);
-                    if (selectedUser != null)
+                    //ApplicationDbContext db = new ApplicationDbContext();
+                    
+                        return RedirectToAction("Index", "Home");
+                    
+                    
+
+
+                    //string test = model.Email;
+                    //bool test2 = Roles.IsUserInRole(model.Email, "Customer");
+                    //if (Roles.IsUserInRole(model.Email, "Customer"))
+                    //{
+                    //    return RedirectToAction("Details", "Customers");
+                    //}
+
+                    var loggedInUser = db.Users.SingleOrDefault(User => User.Email == model.Email);
+                    if (loggedInUser != null)
                     {
-                        return RedirectToLocal(selectedUser);
+                        return RedirectToLocal(loggedInUser);
                     }
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -96,6 +113,7 @@ namespace TrashCollector.Controllers
                     return View(model);
             }
         }
+
 
         //
         // GET: /Account/VerifyCode
@@ -491,23 +509,28 @@ namespace TrashCollector.Controllers
         }
 
         /// <summary>
-        /// An overloaded RedirectToLocal method
+        /// An overloaded RedirectToLocal method which accepts a user
+        /// We want to redirect to the user's page
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        /// 
+        //[Route()]
         private ActionResult RedirectToLocal(ApplicationUser user)
         {
             ApplicationDbContext db = new ApplicationDbContext();
+            var currentUserId = User.Identity.GetUserId();
+
             if (UserManager.IsInRole(user.Id, "Customer"))
             {
-                var selectedCustomer = db.Customers.SingleOrDefault(c => c.ApplicationCustId == user.Id);
-                //return RedirectToAction("Index", "Customers", new { id = selectedCustomer.Id });
-                return RedirectToAction("Index", "Customers");
+                var pickCustomer = db.Customers.FirstOrDefault(c => c.ApplicationCustId == currentUserId);
+                //var selectedCustomer = db.Customers.SingleOrDefault(c => c.ApplicationCustId == user.Id);
+                return RedirectToAction("Index", "Customers", new { id = pickCustomer.Id });
             }
             else if (UserManager.IsInRole(user.Id, "Employee"))
             {
-                var selectedEmployee = db.Employees.Where(e => e.ApplicationEmployeeId == user.Id).Single();
-                return RedirectToAction("Index", "Employees", new { id = selectedEmployee.Id });
+                var pickEmployee = db.Employees.FirstOrDefault(e => e.ApplicationEmployeeId == currentUserId);
+                return RedirectToAction("Index", "Employees", new { id = pickEmployee.Id });
             }
             else
             {

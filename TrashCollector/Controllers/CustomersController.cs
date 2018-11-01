@@ -22,6 +22,7 @@ namespace TrashCollector.Controllers
             return View(customers.ToList());
         }
 
+
         // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
@@ -50,11 +51,16 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,PhoneNumber,AddressId,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance")] Customer customer)
+        public ActionResult Create([Bind(Include = "Id,Name,Email,PhoneNumber,AddressId,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance, Address")] Customer customer)
         {
             if (ModelState.IsValid)
             {
+                db.Addresses.Add(customer.Address);
+                db.SaveChanges();
+
+                customer.AddressId = customer.Address.Id;
                 customer.ApplicationCustId = User.Identity.GetUserId();
+                
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -76,7 +82,8 @@ namespace TrashCollector.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", customer.AddressId);
+            //ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", customer.AddressId);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", "Zipcode", customer.AddressId);
             return View(customer);
         }
 

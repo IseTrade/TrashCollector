@@ -204,25 +204,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201810290144595_InitialCreate.cs" />
-    <Compile Include="Migrations\201810290144595_InitialCreate.Designer.cs">
-      <DependentUpon>201810290144595_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810290148208_adding roles.cs" />
-    <Compile Include="Migrations\201810290148208_adding roles.Designer.cs">
-      <DependentUpon>201810290148208_adding roles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810290238531_add tables.cs" />
-    <Compile Include="Migrations\201810290238531_add tables.Designer.cs">
-      <DependentUpon>201810290238531_add tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810291628079_add applicaton user.cs" />
-    <Compile Include="Migrations\201810291628079_add applicaton user.Designer.cs">
-      <DependentUpon>201810291628079_add applicaton user.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810300344321_fxing roles for customer and employee.cs" />
-    <Compile Include="Migrations\201810300344321_fxing roles for customer and employee.Designer.cs">
-      <DependentUpon>201810300344321_fxing roles for customer and employee.cs</DependentUpon>
+    <Compile Include="Migrations\201811011517079_initial migration.cs" />
+    <Compile Include="Migrations\201811011517079_initial migration.Designer.cs">
+      <DependentUpon>201811011517079_initial migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -308,12 +292,12 @@
     <Content Include="Views\Employees\Delete.cshtml" />
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
-    <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Pickups\Create.cshtml" />
     <Content Include="Views\Pickups\Delete.cshtml" />
     <Content Include="Views\Pickups\Details.cshtml" />
     <Content Include="Views\Pickups\Edit.cshtml" />
     <Content Include="Views\Pickups\Index.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -332,20 +316,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810290144595_InitialCreate.resx">
-      <DependentUpon>201810290144595_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810290148208_adding roles.resx">
-      <DependentUpon>201810290148208_adding roles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810290238531_add tables.resx">
-      <DependentUpon>201810290238531_add tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810291628079_add applicaton user.resx">
-      <DependentUpon>201810291628079_add applicaton user.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810300344321_fxing roles for customer and employee.resx">
-      <DependentUpon>201810300344321_fxing roles for customer and employee.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201811011517079_initial migration.resx">
+      <DependentUpon>201811011517079_initial migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

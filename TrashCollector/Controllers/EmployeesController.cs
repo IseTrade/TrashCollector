@@ -17,13 +17,13 @@ namespace TrashCollector.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         ApplicationUser user = new ApplicationUser();
 
-
         //GET: Employees
-        [HttpGet]
+        //[HttpGet]
         public ActionResult Index()
         {
             return View(db.Employees.ToList());
         }
+
         [HttpGet]
         public ActionResult CustomerList()
         {
@@ -62,7 +62,7 @@ namespace TrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,UserName,EmployeeNumber,ZipCode")] Employee employee)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 employee.ApplicationEmployeeId = User.Identity.GetUserId();
                 db.Employees.Add(employee);
