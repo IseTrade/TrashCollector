@@ -27,6 +27,7 @@ namespace TrashCollector.Controllers
         [HttpGet]
         public ActionResult CustomerList()
         {
+            //Showing customers in employee's zipcode
             var currentUser = User.Identity.GetUserId();
             var employee = db.Employees.Where(e => e.ApplicationEmployeeId == currentUser).SingleOrDefault();
             var customerList = db.Customers.Where(c => c.Address.Zipcode == employee.ZipCode).ToList();

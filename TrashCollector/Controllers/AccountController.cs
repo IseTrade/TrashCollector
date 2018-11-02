@@ -83,10 +83,11 @@ namespace TrashCollector.Controllers
             {
                 case SignInStatus.Success:
                     //ApplicationDbContext db = new ApplicationDbContext();
-                    
-                        return RedirectToAction("Index", "Home");
-                    
-                    
+
+                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+
+
 
 
                     //string test = model.Email;

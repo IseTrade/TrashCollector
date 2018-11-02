@@ -31,6 +31,8 @@ namespace TrashCollector.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Customer customer = db.Customers.Find(id);
+            customer.Address = db.Addresses.Where(a => a.Id == customer.AddressId).SingleOrDefault();
+
             if (customer == null)
             {
                 return HttpNotFound();
@@ -51,14 +53,16 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,PhoneNumber,AddressId,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance, Address")] Customer customer)
+        //public ActionResult Create([Bind(Include = "Id,Name,Email,PhoneNumber,AddressId,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance, Address")] Customer customer)
+        public ActionResult Create([Bind(Include = "Name,Email,PhoneNumber,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,Address")] Customer customer)
+
         {
             if (ModelState.IsValid)
             {
                 db.Addresses.Add(customer.Address);
                 db.SaveChanges();
 
-                customer.AddressId = customer.Address.Id;
+                customer.AddressId = customer.Address.Id;               
                 customer.ApplicationCustId = User.Identity.GetUserId();
                 
                 db.Customers.Add(customer);
@@ -77,13 +81,15 @@ namespace TrashCollector.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = db.Customers.Find(id);           
+            customer.Address = db.Addresses.Where(a => a.Id == customer.AddressId).SingleOrDefault();
             if (customer == null)
             {
                 return HttpNotFound();
             }
-            //ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", customer.AddressId);
+            //ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", "Zipcode", customer.AddressId);
             ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", "Zipcode", customer.AddressId);
+
             return View(customer);
         }
 
@@ -92,15 +98,29 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Email,PhoneNumber,AddressId,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance")] Customer customer)
+        //public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber,AddressId,Name,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,MoneyOwed,Balance")] Customer customer)
+        public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber,Name,UserName,PickupDay,PickupStartDate,PickupEndDate,SpecialPickup,SuspendStartDate,SuspendEndDate,AddressId,Address")] Customer customer)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(customer).State = EntityState.Modified;
+
+                //db.Customers.Add(viewModel.customer);
+                //db.Addresses.Add(viewModel.address);
+                
+                //db.Entry(customer.Address).State = EntityState.Modified;
+
+                db.SaveChanges();
+                var updatedAddress = db.Addresses.Where(a => a.Id == customer.AddressId).FirstOrDefault();
+                updatedAddress.City = customer.Address.City;
+                updatedAddress.NumberAndStreet = customer.Address.NumberAndStreet;
+                updatedAddress.State = customer.Address.State;
+                updatedAddress.Zipcode = customer.Address.Zipcode;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", customer.AddressId);
+            //ViewBag.AddressId = new SelectList(db.Addresses, "Id", "Zipcode", customer.AddressId);
             return View(customer);
         }
 
