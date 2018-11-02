@@ -62,11 +62,12 @@ namespace TrashCollector.Controllers
                 db.Addresses.Add(customer.Address);
                 db.SaveChanges();
 
-                customer.AddressId = customer.Address.Id;               
+                customer.AddressId = customer.Address.Id;//get hidden element from page              
                 customer.ApplicationCustId = User.Identity.GetUserId();
-                
                 db.Customers.Add(customer);
+
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -81,8 +82,9 @@ namespace TrashCollector.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);           
-            customer.Address = db.Addresses.Where(a => a.Id == customer.AddressId).SingleOrDefault();
+            Customer customer = db.Customers.Find(id);
+            customer.Address = db.Addresses.Where(a => a.Id == customer.AddressId).FirstOrDefault();//updating unique record
+
             if (customer == null)
             {
                 return HttpNotFound();
@@ -107,16 +109,20 @@ namespace TrashCollector.Controllers
 
                 //db.Customers.Add(viewModel.customer);
                 //db.Addresses.Add(viewModel.address);
-                
+
                 //db.Entry(customer.Address).State = EntityState.Modified;
 
                 db.SaveChanges();
+
                 var updatedAddress = db.Addresses.Where(a => a.Id == customer.AddressId).FirstOrDefault();
+
                 updatedAddress.City = customer.Address.City;
                 updatedAddress.NumberAndStreet = customer.Address.NumberAndStreet;
                 updatedAddress.State = customer.Address.State;
                 updatedAddress.Zipcode = customer.Address.Zipcode;
+
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.AddressId = new SelectList(db.Addresses, "Id", "NumberAndStreet", customer.AddressId);

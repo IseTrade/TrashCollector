@@ -18,7 +18,7 @@ namespace TrashCollector.Controllers
         ApplicationUser user = new ApplicationUser();
 
         //GET: Employees
-        //[HttpGet]
+        [HttpGet]
         public ActionResult Index()
         {
             return View(db.Employees.ToList());
@@ -32,6 +32,7 @@ namespace TrashCollector.Controllers
             var employee = db.Employees.Where(e => e.ApplicationEmployeeId == currentUser).SingleOrDefault();
             var customerList = db.Customers.Where(c => c.Address.Zipcode == employee.ZipCode).ToList();
             return View(customerList);
+            //test
         }
 
         // GET: Employees/Details/5

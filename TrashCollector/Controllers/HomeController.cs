@@ -23,6 +23,11 @@ namespace TrashCollector.Controllers
                 {
                     return RedirectToAction("Index", "Customers");
                 }
+
+                if (user.UserRole == "Employee")
+                {
+                    return RedirectToAction("Index", "Employees");
+                }
             }
             
             //add employee section here

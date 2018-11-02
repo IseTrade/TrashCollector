@@ -20,7 +20,6 @@ namespace TrashCollector.Controllers
             var pickups = db.Pickups.Include(p => p.Customer).Include(p => p.Employee);
             return View(pickups.ToList());
         }
-
         // GET: Pickups/Details/5
         public ActionResult Details(int? id)
         {
